@@ -4,38 +4,38 @@ import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
 import "./App.css";
 
-function Headline(props) {
-  return (
-    <div>
-      <h1>{props.title}</h1>
-      <LikeCounter />
-    </div>
-  );
+function fetchUser() {
+  const url = "https://jsonplaceholder.typicode.com/users/3";
+  return fetch(url).then((res) => res.json());
 }
 
-function LikeCounter() {
-  const [count, setCount] = useState(0);
-
-  const increment = () => {
-    setCount((oldCount) => oldCount + 1);
-  };
-
-  const decrement = () => {
-    setCount((oldCount) => oldCount - 1);
-  };
+function User(props) {
   return (
-    <div className="like">
-      <p>Like Count: {count}</p>
-      <button onClick={increment}>Like</button>
-      <button onClick={decrement}>Dislike</button>
+    <div className="User">
+      <ul>
+        <li>Name: {props.name}</li>
+        <li>Email: {props.email}</li>
+        <li>Phone: {props.phone}</li>
+      </ul>
     </div>
   );
 }
 
 function App() {
+  const [user, setUser] = useState([]);
   return (
     <div className="App">
-      <Headline title="Hello, world!" />
+      <h1>User Details</h1>
+      <User {...user} />
+      <button
+        onClick={() =>
+          fetchUser().then((user) => {
+            setUser(user);
+          })
+        }
+      >
+        Get User
+      </button>
     </div>
   );
 }
